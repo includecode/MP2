@@ -1,0 +1,19 @@
+-------------------------------------------------
+####    FONCTIONNEMENT DE randomscheduler  ###
+-----------------------------------------------
+
+
+0) ---- PARAMETRES
+Cette fonction prend en paramètre la liste de tous les processus, la liste des processus prêts et un pointeur sur  qui simule l'horloge et elle retourne un processus
+
+1) ---- But de la fonction
+Cette fonction à pour but de lancer l'exécution d'un processus (ce processus est choisit parmis la liste des processus prêts ("ready")
+
+
+1.1 ) 	choix du processus à exécuter
+le processus à exécuter est choisit aléatoirement à l'aide le la fonction rand() qui génère un nombre (disons k) entre 0 et le nombre de processus prêts, c'est à dire dans la liste "ready".
+NOTE: puisqu'il ne s'agit pas d'un tableau, pour se placer sur le processus qui a le numéro choisit, on parcours la liste jusqu'à se trouver sur le bon processus (le k-ième processus).
+
+1.2) Exécution effective du processus
+Le processus choisit et éxécuté est retourné, mais avant cela, on fait un mise à jour de l'horloge, en générant une valeur entre 0 et temps restant du processus, cette valeur sera notament utilisée par la fonction appelante pour décrementer le temps restant de ce processus.
+
