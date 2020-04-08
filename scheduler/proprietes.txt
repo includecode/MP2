@@ -1,0 +1,28 @@
+-----------------------#######  Q U E S T I O N   12 ###########----------------------------------------------------
+
+On constate que les propriétés énnoncés en cours sont respectées,
+ notament au niveau de la complexité d'implémentation et de la performance des ordonnanceurs
+
+  les sysmtème FCFS et SJF étaient bien plus faciles à implémenter que RR par exemple.
+
+        #FCFS
+- compréhension et mise en place facile, mais on retrouve les inconvenients vus en cours: effet de convoi si on a un job trop long et des petits jobs qui arrivent après
+         #SRTF et SJF
+sont optimaux en temps d'attente moyen pour les processus, par contre il est difficile d'estimer la durée d'un processus
+
+
+        #RR
+    Le temps de réponse est optimal avec ce système: notre algorithme par exmeple lorsqu'il a le choix entre deux processus, il choisit
+celui qui vient d'arriver dans la file, ainsi le temps d'attente sue l'exemple du cours est de 0 avec notre algorithme contrairement au 4 de l'algorithme vue en cours.
+Aucun processus n’attends sans réponse plus de (n − 1)q unités de temps.
+
+LA repartition CPU est équitable, par contre comme vue en cours on a beaucoup de changements de contexte, surtout pour les processus longs
+
+
+
+-----------------------#######  Q U E S T I O N   20 ###########----------------------------------------------------
+
+    Lors de notre premier test sur EDF, le résultat n'était pas exactement le même que celui du cours, ceci est du au fait qu'il
+peut avoir deux ou plusieurs tâches qui ont la même deadline au cours de l'exécution et on a donc plusieurs choix
+par exemple au temps T = 20 de l'exemple EDF du cours on avait le choix entre T1 et T2 car leur deadline étaient 24. Néanmoins, nous avons modifié notre algorithme pour qu'il
+donne le même résultat que celui du cours,il commence donc par la tâche qui à le plus petit coût (Ci) lorsqu'il y'a plusieurs choix.
