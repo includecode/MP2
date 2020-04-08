@@ -15,5 +15,6 @@ le processus à exécuter est choisit aléatoirement à l'aide le la fonction ra
 NOTE: puisqu'il ne s'agit pas d'un tableau, pour se placer sur le processus qui a le numéro choisit, on parcours la liste jusqu'à se trouver sur le bon processus (le k-ième processus).
 
 1.2) Exécution effective du processus
-Le processus choisit et éxécuté est retourné, mais avant cela, on fait un mise à jour de l'horloge, en générant une valeur entre 0 et temps restant du processus, cette valeur sera notament utilisée par la fonction appelante pour décrementer le temps restant de ce processus.
+Le processus choisit et éxécuté est retourné, mais avant cela, on fait un mise à jour de l'horloge, en générant une valeur entre 0 et temps restant du processus, cette valeur sera notament utilisée
+par la fonction appelante pour décrementer le temps restant de ce processus.
 

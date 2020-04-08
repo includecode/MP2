@@ -46,7 +46,7 @@ tproc *randomscheduler(tlist *procs, tlist *ready, int *delta)
 /* --Scheduler fcfs-- */
 tproc *fcfs(tlist *procs, tlist *ready, int *delta)
 {
-    /* take the first in the queue (first come)*/
+    /* take the first in the queue (first come) */
     tnode *p = ready->first;
     *delta = 1;
     return p->proc;
@@ -58,14 +58,11 @@ tproc *rr(tlist *procs, tlist *ready, int *delta)
 {
     tnode *p = ready->last;
 
-    //Select the last process at each turn (newest process)
-    //Send the last proc back to the head of the queue (for an eventual come back if not finished)
+    /* Select the last process at each turn (newest process)
+    run it, and send it back to the head of the queue (for an eventual come back if not finished) */
     if (len(ready) > 1)
     {
-        tnode *f = NULL;
-
-        for (f = ready->first; f->next != NULL; f = f->next)
-            ; //this loop just finds the last process in queue
+        tnode *f = ready->last;
         f->next = ready->first;
         ready->last = ready->first;
         ready->first = ready->last->next;
@@ -81,20 +78,18 @@ tproc *sjf(tlist *procs, tlist *ready, int *delta)
 {
     tnode *srt_process = ready->first;
 
-    //find the process which has the shortest lenght
+    /* find the process which has the shortest lenght */
     for (tnode *p = srt_process->next; p != NULL; p = p->next)
     {
         if (p->proc->length < srt_process->proc->length)
             srt_process = p;
     }
-fprintf(stderr, " +++++l is %d proc = %d rem = %d\n", srt_process->proc->length, srt_process->proc->pid, srt_process->proc->remaining);
-    //Simulate execution of the same process untill the end
+    //Simulating execution of the same process untill the end
     while (srt_process->proc->length > 0)
     {
         srt_process->proc->length--;
         (*delta)++;
     }
-fprintf(stderr, " +++++delta is %d proc = %d rem = %d\n", *delta, srt_process->proc->pid, srt_process->proc->remaining);
 
     return srt_process->proc;
 }
@@ -123,14 +118,14 @@ tproc *edf(tlist *procs, tlist *ready, int *delta)
 
     tnode *edf_process = ready->first;
 
-    //find the process which has the nearest deadline
+    /* find the process which has the nearest deadline */
     for (tnode *p = edf_process->next; p != NULL; p = p->next)
     {
         if (p->proc->activation + p->proc->period < edf_process->proc->activation + edf_process->proc->period)
             edf_process = p;
         else
         {
-            //If same activation time, take the shortest length
+            /* If same dateline, take the shortest length */
             if (p->proc->activation + edf_process->proc->period == edf_process->proc->activation + edf_process->proc->period)
             {
                 if (p->proc->length < edf_process->proc->length)
@@ -148,7 +143,7 @@ tproc *rm(tlist *procs, tlist *ready, int *delta)
 {
     tnode *rm_process = ready->first;
 
-    //find the process which has the highest priority
+    /* find the process which has the highest priority */
     for (tnode *p = rm_process->next; p != NULL; p = p->next)
     {
         if ((float)1 / p->proc->period > (float)1 / rm_process->proc->period)
@@ -157,7 +152,7 @@ tproc *rm(tlist *procs, tlist *ready, int *delta)
         }
         else
         {
-            //If same period, take the shortest length
+            /* If same period, take the shortest length */
             if ((float)1 / p->proc->period == (float)1 / rm_process->proc->period)
             {
                 if (p->proc->length < rm_process->proc->length)
@@ -197,7 +192,7 @@ void simulate(int max_time)
     for (tnode *p = procs.first; p != NULL; p = p->next)
         process_first_touch[p->proc->pid] = 0;
 
-    /* [PERIODIC] array to keep initial activation time of periodic processes */
+    /* [PERIODIC] array to keep initial remainings of periodic processes */
     char *initial_remainings = malloc(sizeof(char) * len(&procs));
     for (tnode *p = procs.first; p != NULL; p = p->next)
         initial_remainings[p->proc->pid] = p->proc->remaining;
@@ -207,8 +202,10 @@ void simulate(int max_time)
     stats.response = 0;
     stats.completion = 0;
     tnode *f = NULL;
+
     for (f = procs.first; f != NULL; f = f->next)
         stats.completion += f->proc->length;
+
     while (time <= max_time)
     {
         int old_time = time;
@@ -224,8 +221,8 @@ void simulate(int max_time)
             {
                 del(&procs, proc);
                 add(&ready, proc);
-                //on sjf process are not added at the time they should be added beacause another
-                //process has running priority, so ad this to response time
+                /* on sjf, tasks are not added at the time they should be added beacause another
+                process has running priority, so ad this to response time */
                 stats.response += (time - proc->activation);
             }
         }
@@ -267,7 +264,7 @@ void simulate(int max_time)
                 del(&procs, proc);
                 if (proc->period > 0) // periodic task
                 {
-                    //Update & Send periodic tasks back to the list of processes
+                    /* Update & Send periodic tasks back to the list of processes */
                     proc->remaining = initial_remainings[proc->pid];
                     proc->activation = proc->activation + proc->period;
                     add(&procs, proc);
